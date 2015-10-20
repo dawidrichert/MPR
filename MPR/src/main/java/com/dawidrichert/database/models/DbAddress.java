@@ -3,14 +3,16 @@ package com.dawidrichert.database.models;
 public class DbAddress implements Indexable {
 
     private long id;
+    private long userId;
     private String street;
     private String city;
     private String postalCode;
     private String province;
     private String country;
 
-    public DbAddress(long id, String street, String city, String postalCode, String province, String country) {
+    public DbAddress(long id, long userId, String street, String city, String postalCode, String province, String country) {
         this.id = id;
+        this.userId = userId;
         this.street = street;
         this.city = city;
         this.postalCode = postalCode;
@@ -24,6 +26,14 @@ public class DbAddress implements Indexable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getStreet() {
