@@ -14,23 +14,23 @@ public class Database implements DataSource {
     }
 
     public Connection getConnection(String username, String password) throws SQLException {
-        return null;
+        return DriverManager.getConnection(url, username, password);
     }
 
     public PrintWriter getLogWriter() throws SQLException {
-        return null;
+        return DriverManager.getLogWriter();
     }
 
     public void setLogWriter(PrintWriter out) throws SQLException {
-
+        DriverManager.setLogWriter(out);
     }
 
     public void setLoginTimeout(int seconds) throws SQLException {
-
+        DriverManager.setLoginTimeout(seconds);
     }
 
     public int getLoginTimeout() throws SQLException {
-        return 0;
+        return DriverManager.getLoginTimeout();
     }
 
     public Logger getParentLogger() throws SQLFeatureNotSupportedException {
