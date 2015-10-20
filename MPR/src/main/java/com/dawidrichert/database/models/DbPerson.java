@@ -1,15 +1,25 @@
-package com.dawidrichert.models;
+package com.dawidrichert.database.models;
 
-public class Person {
+public class DbPerson implements Indexable {
 
+    private long id;
     private String firstName;
     private String lastName;
     private String phoneNumber;
 
-    public Person(String firstName, String lastName, String phoneNumber) {
-        this.firstName =  firstName;
+    public DbPerson(long id, String firstName, String lastName, String phoneNumber) {
+        this.id = id;
+        this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getFirstName() {

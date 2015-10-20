@@ -1,24 +1,29 @@
-package com.dawidrichert.models;
+package com.dawidrichert.database.models;
 
-public class Address {
+public class DbAddress implements Indexable {
 
     private long id;
     private String street;
     private String city;
-    private String province;
     private String postalCode;
+    private String province;
     private String country;
 
-    public Address(String street, String city, String province, String postalCode, String country) {
+    public DbAddress(long id, String street, String city, String postalCode, String province, String country) {
+        this.id = id;
         this.street = street;
         this.city = city;
-        this.province = province;
         this.postalCode = postalCode;
+        this.province = province;
         this.country = country;
     }
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getStreet() {
@@ -37,20 +42,20 @@ public class Address {
         this.city = city;
     }
 
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
     public String getPostalCode() {
         return postalCode;
     }
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 
     public String getCountry() {

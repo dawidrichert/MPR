@@ -1,4 +1,4 @@
-package com.dawidrichert.models;
+package com.dawidrichert.service.models;
 
 import java.util.Collection;
 

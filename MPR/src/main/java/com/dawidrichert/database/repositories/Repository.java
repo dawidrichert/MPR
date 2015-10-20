@@ -1,4 +1,4 @@
-package com.dawidrichert.repositories;
+package com.dawidrichert.database.repositories;
 
 import java.util.Collection;
 

@@ -1,4 +1,4 @@
-package com.dawidrichert.models;
+package com.dawidrichert.service.models;
 
 import java.util.Collection;
 
@@ -7,6 +7,11 @@ public class Role {
     private long id;
     private String name;
     private Collection<Permission> permissions;
+
+    public Role(long id, String name, Collection<Permission> permissions) {
+        this(name, permissions);
+        this.id = id;
+    }
 
     public Role(String name, Collection<Permission> permissions) {
         this.name = name;
