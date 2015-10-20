@@ -1,7 +1,6 @@
 package com.dawidrichert.database.repositories;
 
 import com.dawidrichert.database.models.Indexable;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

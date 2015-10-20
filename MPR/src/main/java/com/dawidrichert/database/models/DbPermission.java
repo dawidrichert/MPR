@@ -3,10 +3,12 @@ package com.dawidrichert.database.models;
 public class DbPermission implements Indexable {
 
     private long id;
+    private long roleId;
     private String name;
 
-    public DbPermission(long id, String name) {
+    public DbPermission(long id, long roleId, String name) {
         this.id = id;
+        this.roleId = roleId;
         this.name = name;
     }
 
@@ -16,6 +18,14 @@ public class DbPermission implements Indexable {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(long roleId) {
+        this.roleId = roleId;
     }
 
     public String getName() {
