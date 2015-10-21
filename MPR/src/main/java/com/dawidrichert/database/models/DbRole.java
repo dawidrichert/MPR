@@ -6,7 +6,11 @@ public class DbRole implements Indexable {
     private String name;
 
     public DbRole(long id, String name) {
+        this(name);
         this.id = id;
+    }
+
+    public DbRole(String name) {
         this.name = name;
     }
 

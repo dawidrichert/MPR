@@ -8,7 +8,11 @@ public class DbPerson implements Indexable {
     private String phoneNumber;
 
     public DbPerson(long id, String firstName, String lastName, String phoneNumber) {
+        this(firstName, lastName, phoneNumber);
         this.id = id;
+    }
+
+    public DbPerson(String firstName, String lastName, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;

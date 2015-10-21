@@ -18,7 +18,7 @@ public class UserRepository extends BaseRepository<DbUser> {
     }
 
     @Override
-    public void add(DbUser user) {
+    public long add(DbUser user) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format("INSERT INTO %s (", tableName);
@@ -26,15 +26,17 @@ public class UserRepository extends BaseRepository<DbUser> {
             sql += String.format("%s, ", col_Login);
             sql += String.format("%s) VALUES (?, ?, ?)", col_Password);
 
-            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 preparedStatement.setLong(1, user.getPersonId());
                 preparedStatement.setString(2, user.getLogin());
                 preparedStatement.setString(3, user.getPassword());
                 preparedStatement.executeUpdate();
+                return getLastInsertedId(preparedStatement);
             }
         } catch(Exception e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
     @Override

@@ -13,7 +13,6 @@ public class DbUser implements Indexable {
     }
 
     public DbUser(long personId, String login, String password) {
-        this.id = id;
         this.personId = personId;
         this.login = login;
         this.password = password;

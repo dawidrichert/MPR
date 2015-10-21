@@ -11,11 +11,6 @@ public class User {
     private Collection<Address> addresses;
     private Collection<Role> roles;
 
-    public User(long id, String login, String password, Person person, Collection<Address> addresses, Collection<Role> roles) {
-        this(login, password, person, addresses, roles);
-        this.id = id;
-    }
-
     public User(String login, String password, Person person, Collection<Address> addresses, Collection<Role> roles) {
         this.login = login;
         this.password = password;
@@ -23,8 +18,6 @@ public class User {
         this.addresses = addresses;
         this.roles = roles;
     }
-
-    public User() { }
 
     public long getId() {
         return id;

@@ -6,7 +6,7 @@ public interface Repository<T> {
 
     T getById(long id);
     Collection<T> getAll();
-    void add(T item);
+    long add(T item);
     void remove(T item);
     void removeAll();
     void update(T item);

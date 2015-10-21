@@ -4,14 +4,11 @@ import com.dawidrichert.database.models.DbAddress;
 import com.dawidrichert.database.models.DbUser;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class AddressRepository extends BaseRepository<DbAddress> {
 
-    private static final String tableName = "Users";
+    private static final String tableName = "Addresses";
     private static final String col_Id = "Id";
     private static final String col_UserId = "UserId";
     private static final String col_Street = "Street";
@@ -25,7 +22,7 @@ public class AddressRepository extends BaseRepository<DbAddress> {
     }
 
     @Override
-    public void add(DbAddress address) {
+    public long add(DbAddress address) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format("INSERT INTO %s (", tableName);
@@ -34,9 +31,9 @@ public class AddressRepository extends BaseRepository<DbAddress> {
             sql += String.format("%s, ", col_City);
             sql += String.format("%s, ", col_PostalCode);
             sql += String.format("%s, ", col_Province);
-            sql += String.format("%s) VALUES (?, ?, ?)", col_Country);
+            sql += String.format("%s) VALUES (?, ?, ?, ?, ?, ?)", col_Country);
 
-            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 preparedStatement.setLong(1, address.getUserId());
                 preparedStatement.setString(2, address.getStreet());
                 preparedStatement.setString(3, address.getCity());
@@ -44,10 +41,12 @@ public class AddressRepository extends BaseRepository<DbAddress> {
                 preparedStatement.setString(5, address.getProvince());
                 preparedStatement.setString(6, address.getCountry());
                 preparedStatement.executeUpdate();
+                return getLastInsertedId(preparedStatement);
             }
         } catch(Exception e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
     @Override

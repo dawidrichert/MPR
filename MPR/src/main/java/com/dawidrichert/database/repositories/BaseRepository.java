@@ -67,7 +67,7 @@ public abstract class BaseRepository<T extends Indexable> implements Repository<
     }
 
     @Override
-    public abstract void add(T item);
+    public abstract long add(T item);
 
     @Override
     public void remove(T item) {
@@ -101,4 +101,13 @@ public abstract class BaseRepository<T extends Indexable> implements Repository<
     protected abstract void createTableIfNotExists() throws SQLException;
 
     protected abstract T mapResultSetToModel(ResultSet resultSet) throws SQLException;
+
+    protected long getLastInsertedId(PreparedStatement preparedStatement) throws SQLException {
+        ResultSet rs = preparedStatement.getGeneratedKeys();
+        if(rs.next())
+        {
+            return rs.getLong(1);
+        }
+        return -1;
+    }
 }

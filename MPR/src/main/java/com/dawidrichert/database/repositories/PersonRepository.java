@@ -1,13 +1,9 @@
 package com.dawidrichert.database.repositories;
 
 import com.dawidrichert.database.models.DbPerson;
-import com.dawidrichert.database.models.DbUser;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class PersonRepository extends BaseRepository<DbPerson> {
 
@@ -22,7 +18,7 @@ public class PersonRepository extends BaseRepository<DbPerson> {
     }
 
     @Override
-    public void add(DbPerson person) {
+    public long add(DbPerson person) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format("INSERT INTO %s (", tableName);
@@ -30,15 +26,17 @@ public class PersonRepository extends BaseRepository<DbPerson> {
             sql += String.format("%s, ", col_LastName);
             sql += String.format("%s) VALUES (?, ?, ?)", col_PhoneNumber);
 
-            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 preparedStatement.setString(1, person.getFirstName());
                 preparedStatement.setString(2, person.getLastName());
                 preparedStatement.setString(3, person.getPhoneNumber());
                 preparedStatement.executeUpdate();
+                return getLastInsertedId(preparedStatement);
             }
         } catch(Exception e) {
             e.printStackTrace();
         }
+        return -1;
     }
 
     @Override
