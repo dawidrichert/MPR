@@ -14,6 +14,7 @@ public class DbAddress implements Indexable {
         this(userId, street, city, postalCode, province, country);
         this.id = id;
     }
+
     public DbAddress(long userId, String street, String city, String postalCode, String province, String country) {
         this.userId = userId;
         this.street = street;
