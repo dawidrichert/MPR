@@ -10,9 +10,10 @@ public class Application {
     public static void main(String args[]) {
         UserService userService = new UserService();
         CreatingDemonstration(userService);
+        System.out.println("Finished! See results on the HSQL database.");
     }
 
-    public static void CreatingDemonstration(UserService userService) {
+    private static void CreatingDemonstration(UserService userService) {
 
         // Declare permission
         Permission permAdd = new Permission("Add");

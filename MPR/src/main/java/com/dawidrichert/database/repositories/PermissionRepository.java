@@ -1,8 +1,6 @@
 package com.dawidrichert.database.repositories;
 
 import com.dawidrichert.database.models.DbPermission;
-import com.dawidrichert.database.models.DbRole;
-import com.dawidrichert.database.models.DbUser;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -72,7 +70,7 @@ public class PermissionRepository extends BaseRepository<DbPermission> {
     }
 
     @Override
-    protected void createTableIfNotExists() throws SQLException {
+    protected void createTableIfNotExists() {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql = String.format("CREATE TABLE IF NOT EXISTS %s (", tableName);

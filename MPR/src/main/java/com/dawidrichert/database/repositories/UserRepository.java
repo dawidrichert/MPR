@@ -62,7 +62,7 @@ public class UserRepository extends BaseRepository<DbUser> {
     }
 
     @Override
-    protected void createTableIfNotExists() throws SQLException {
+    protected void createTableIfNotExists() {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql = String.format("CREATE TABLE IF NOT EXISTS %s (", tableName);

@@ -56,7 +56,7 @@ public class RoleUserRepository extends BaseRepository<DbRoleUser> {
     }
 
     @Override
-    protected void createTableIfNotExists() throws SQLException {
+    protected void createTableIfNotExists() {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql = String.format("CREATE TABLE IF NOT EXISTS %s (", tableName);

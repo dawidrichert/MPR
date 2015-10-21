@@ -14,17 +14,13 @@ public abstract class BaseRepository<T extends Indexable> implements Repository<
 
     private final String tableName;
     private final String col_Id;
-    protected DataSource dataSource;
+    protected final DataSource dataSource;
 
     public BaseRepository(DataSource dataSource, String tableName, String col_Id) {
         this.dataSource = dataSource;
         this.tableName = tableName;
         this.col_Id = col_Id;
-        try {
-            createTableIfNotExists();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        createTableIfNotExists();
     }
 
     @Override
@@ -98,7 +94,7 @@ public abstract class BaseRepository<T extends Indexable> implements Repository<
     @Override
     public abstract void update(T item);
 
-    protected abstract void createTableIfNotExists() throws SQLException;
+    protected abstract void createTableIfNotExists();
 
     protected abstract T mapResultSetToModel(ResultSet resultSet) throws SQLException;
 

@@ -5,10 +5,6 @@ import com.dawidrichert.database.models.*;
 import com.dawidrichert.database.repositories.*;
 import com.dawidrichert.service.models.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 public class UserService {
 
     private AddressRepository addressRepository;
