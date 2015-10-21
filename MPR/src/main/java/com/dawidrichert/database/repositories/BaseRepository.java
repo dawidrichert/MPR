@@ -31,7 +31,7 @@ public abstract class BaseRepository<T extends Indexable> implements Repository<
     public T getById(long id)  {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
-            sql = String.format("SELECT * FROM %s WHERE %s=%s", tableName, col_Id, id);
+            sql = String.format("SELECT * FROM %s WHERE %s='%s'", tableName, col_Id, id);
 
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 try(ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -72,7 +72,7 @@ public abstract class BaseRepository<T extends Indexable> implements Repository<
     @Override
     public void remove(T item) {
         try(Connection connection = dataSource.getConnection()) {
-            String sql = String.format("DELETE FROM %s WHERE %s=%s", tableName, col_Id, item.getId());
+            String sql = String.format("DELETE FROM %s WHERE %s='%s'", tableName, col_Id, item.getId());
 
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 preparedStatement.executeUpdate();

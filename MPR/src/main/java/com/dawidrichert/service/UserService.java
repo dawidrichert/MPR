@@ -42,9 +42,23 @@ public class UserService {
         }
 
         for(Role role : user.getRoles()) {
-            long roleId = roleRepository.add(new DbRole(role.getName()));
+            long roleId;
+            DbRole dbRole = roleRepository.getByName(role.getName());
+            if(dbRole == null) {
+                roleId = roleRepository.add(new DbRole(role.getName()));
+            } else {
+                roleId = dbRole.getId();
+            }
+
             for(Permission permission : role.getPermissions()) {
-                long permissionId = permissionRepository.add(new DbPermission(roleId, permission.getName()));
+                long permissionId;
+                DbPermission dbPermission = permissionRepository.getByName(permission.getName());
+                if(dbPermission == null) {
+                    permissionId = permissionRepository.add(new DbPermission(roleId, permission.getName()));
+                } else {
+                    permissionId = dbPermission.getId();
+                }
+
                 permissionRoleRepository.add(new DbPermissionRole(roleId, permissionId));
             }
             roleUserRepository.add(new DbRoleUser(userId, roleId));

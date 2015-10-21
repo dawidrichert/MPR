@@ -1,6 +1,7 @@
 package com.dawidrichert.database.repositories;
 
 import com.dawidrichert.database.models.DbPermission;
+import com.dawidrichert.database.models.DbRole;
 import com.dawidrichert.database.models.DbUser;
 
 import javax.sql.DataSource;
@@ -14,6 +15,24 @@ public class PermissionRepository extends BaseRepository<DbPermission> {
 
     public PermissionRepository(DataSource dataSource) {
         super(dataSource, tableName, col_Id);
+    }
+
+    public DbPermission getByName(String name)  {
+        try(Connection connection = dataSource.getConnection()) {
+            String sql;
+            sql = String.format("SELECT * FROM %s WHERE %s='%s'", tableName, col_Name, name);
+
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        return mapResultSetToModel(resultSet);
+                    }
+                }
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

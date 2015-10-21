@@ -27,7 +27,7 @@ public class AddressRepository extends BaseRepository<DbAddress> {
         Collection<DbAddress> addresses = new ArrayList<>();
         try(Connection connection = dataSource.getConnection()) {
             String sql;
-            sql = String.format("SELECT * FROM %s WHERE %s=%s", tableName, col_UserId, userId);
+            sql = String.format("SELECT * FROM %s WHERE %s='%s'", tableName, col_UserId, userId);
 
             try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
                 try(ResultSet resultSet = preparedStatement.executeQuery()) {
