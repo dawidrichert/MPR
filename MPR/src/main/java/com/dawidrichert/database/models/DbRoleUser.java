@@ -26,7 +26,6 @@ public class DbRoleUser implements Indexable {
         this.roleId = roleId;
     }
 
-    // TODO - Remove
     public long getId() {
         return userId;
     }

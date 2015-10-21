@@ -1,31 +1,15 @@
 package com.dawidrichert;
 
-import com.dawidrichert.database.Database;
-import com.dawidrichert.database.models.DbUser;
 import com.dawidrichert.service.UserService;
 import com.dawidrichert.service.models.*;
-import com.dawidrichert.database.repositories.UserRepository;
 
 import java.util.Arrays;
 
 public class Application {
 
     public static void main(String args[]) {
-//        DbUser user = new DbUser(1, "dawid", "secret");
-//
-//        Database hsqlDatabase = new Database();
-//
-//        UserRepository userRepository = new UserRepository(hsqlDatabase);
-//        userRepository.add(user);
-//
-//        System.out.println(userRepository.getById(0).getLogin());
-
-
-
         UserService userService = new UserService();
-
         CreatingDemonstration(userService);
-        //DisplayingDemonstration(userRepository);
     }
 
     public static void CreatingDemonstration(UserService userService) {
@@ -55,12 +39,4 @@ public class Application {
         userService.addUser(user1);
         userService.addUser(user2);
     }
-//
-//    public static void DisplayingDemonstration(UserRepository userRepository) {
-//        System.out.println("Users retrieved from database: ");
-//        for(User user : userRepository.getAll()) {
-//            System.out.println("Login:\t" + user.getLogin());
-//            System.out.println("Name:\t" + user.getPerson().getFirstName() + " " + user.getPerson().getLastName());
-//        }
-//    }
 }

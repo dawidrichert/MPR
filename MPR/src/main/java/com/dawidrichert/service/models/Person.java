@@ -7,6 +7,11 @@ public class Person {
     private String lastName;
     private String phoneNumber;
 
+    public Person(long id, String firstName, String lastName, String phoneNumber) {
+        this(firstName, lastName, phoneNumber);
+        this.id = id;
+    }
+
     public Person(String firstName, String lastName, String phoneNumber) {
         this.firstName =  firstName;
         this.lastName = lastName;

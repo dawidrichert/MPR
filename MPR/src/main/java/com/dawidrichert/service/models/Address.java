@@ -9,6 +9,11 @@ public class Address {
     private String province;
     private String country;
 
+    public Address(long id, String street, String city, String postalCode, String province, String country) {
+        this(street, city, postalCode, province, country);
+        this.id = id;
+    }
+
     public Address(String street, String city, String postalCode, String province, String country) {
         this.street = street;
         this.city = city;

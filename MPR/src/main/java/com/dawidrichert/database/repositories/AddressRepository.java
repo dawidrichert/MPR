@@ -5,6 +5,8 @@ import com.dawidrichert.database.models.DbUser;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class AddressRepository extends BaseRepository<DbAddress> {
 
@@ -19,6 +21,25 @@ public class AddressRepository extends BaseRepository<DbAddress> {
 
     public AddressRepository(DataSource dataSource) {
         super(dataSource, tableName, col_Id);
+    }
+
+    public Collection<DbAddress> getByUserId(long userId) {
+        Collection<DbAddress> addresses = new ArrayList<>();
+        try(Connection connection = dataSource.getConnection()) {
+            String sql;
+            sql = String.format("SELECT * FROM %s WHERE %s=%s", tableName, col_UserId, userId);
+
+            try(PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        addresses.add(mapResultSetToModel(resultSet));
+                    }
+                }
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return addresses;
     }
 
     @Override

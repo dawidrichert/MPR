@@ -26,7 +26,6 @@ public class DbPermissionRole implements Indexable {
         this.permissionId = permissionId;
     }
 
-    // TODO - Remove
     public long getId() {
         return roleId;
     }

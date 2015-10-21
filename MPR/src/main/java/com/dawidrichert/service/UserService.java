@@ -5,6 +5,10 @@ import com.dawidrichert.database.models.*;
 import com.dawidrichert.database.repositories.*;
 import com.dawidrichert.service.models.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public class UserService {
 
     private AddressRepository addressRepository;
@@ -36,6 +40,7 @@ public class UserService {
         for(Address address : user.getAddresses()) {
             addressRepository.add(new DbAddress(userId, address.getStreet(), address.getCity(), address.getPostalCode(), address.getProvince(), address.getCountry()));
         }
+
         for(Role role : user.getRoles()) {
             long roleId = roleRepository.add(new DbRole(role.getName()));
             for(Permission permission : role.getPermissions()) {
@@ -45,17 +50,6 @@ public class UserService {
             roleUserRepository.add(new DbRoleUser(userId, roleId));
         }
     }
-
-//    public User getUser(int id) {
-//        DbUser user = userRepository.getById(id);
-//        if(user != null) {
-//            Collection<Address> addresses = addressRepository.getAll();
-//
-//            return new User(user.getId(), user.getLogin(), user.getPassword(),
-//                    personRepository.getByUserId(user.getId()), xxx);
-//        }
-//        return null;
-//    }
 
     private void initRepositories(Database database) {
         addressRepository = new AddressRepository(database);
