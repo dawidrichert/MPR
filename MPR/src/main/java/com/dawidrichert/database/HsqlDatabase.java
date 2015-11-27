@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.sql.*;
 import java.util.logging.Logger;
 
-public class Database implements DataSource {
+public class HsqlDatabase implements DataSource {
 
     private final static String url = "jdbc:hsqldb:hsql://localhost";
 

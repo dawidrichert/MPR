@@ -1,43 +1,34 @@
 package com.dawidrichert;
 
-import com.dawidrichert.service.UserService;
-import com.dawidrichert.service.models.*;
-
-import java.util.Arrays;
+import com.dawidrichert.database.HsqlDatabase;
+import com.dawidrichert.database.DatabaseContext;
+import com.dawidrichert.database.models.Permission;
+import com.dawidrichert.database.models.Role;
 
 public class Application {
 
     public static void main(String args[]) {
-        UserService userService = new UserService();
-        CreatingDemonstration(userService);
+        CreatingDemonstration();
         System.out.println("Finished! See results on the HSQL database.");
     }
 
-    private static void CreatingDemonstration(UserService userService) {
+    private static void CreatingDemonstration() {
+
+        DatabaseContext context = new DatabaseContext(new HsqlDatabase());
 
         // Declare permission
-        Permission permAdd = new Permission("Add");
-        Permission permEdit = new Permission("Edit");
-        Permission permDelete = new Permission("Delete");
-        Permission permReadOnly = new Permission("ReadOnly");
-        Permission permRestore = new Permission("Restore");
+        context.permissions().add(new Permission("Add"));
+        context.permissions().add(new Permission("Edit"));
+        context.permissions().add(new Permission("Delete"));
+        context.permissions().add(new Permission("ReadOnly"));
+        context.permissions().add(new Permission("Restore"));
 
         // Declare roles
-        Role roleAdmin = new Role("Admin", Arrays.asList(permAdd, permEdit, permDelete, permReadOnly, permRestore));
-        Role roleTeacher = new Role("Teacher", Arrays.asList(permAdd, permEdit, permDelete, permReadOnly));
-        Role roleStudent = new Role("Student", Arrays.asList(permAdd, permEdit, permReadOnly));
+        context.roles().add(new Role("Admin"));
+        context.roles().add(new Role("Teacher"));
+        context.roles().add(new Role("Student"));
 
-        // Declare users
-        User user1 = new User("dawidr", "pass123", new Person("Dawid", "Richert", "111-222-333"),
-                Arrays.asList(new Address("Kurczaka 5", "Kartuzy", "83-300", "Pomorenian", "Poland")),
-                Arrays.asList(roleAdmin));
-
-        User user2 = new User("adamn", "pass222", new Person("Adam", "Nowak", "999-888-777"),
-                Arrays.asList(new Address("Hipopotama 2", "Gdansk", "80-000", "Pomeranian", "Poland")),
-                Arrays.asList(roleStudent, roleTeacher));
-
-        // Insert data to database
-        userService.addUser(user1);
-        userService.addUser(user2);
+        // Insert data
+        context.saveChanges();
     }
 }

@@ -1,11 +1,18 @@
 package com.dawidrichert.database.models;
 
-public class DbPermissionRole implements Indexable {
+public class PermissionRole extends Entity {
 
     private long roleId;
     private long permissionId;
 
-    public DbPermissionRole(long roleId, long permissionId) {
+    public PermissionRole(long id, long roleId, long permissionId) {
+        this(roleId, permissionId);
+        setId(id);
+        setState(EntityState.Unchanged);
+    }
+
+    public PermissionRole(long roleId, long permissionId) {
+        super(EntityState.New);
         this.roleId = roleId;
         this.permissionId = permissionId;
     }
@@ -24,9 +31,5 @@ public class DbPermissionRole implements Indexable {
 
     public void setPermissionId(long permissionId) {
         this.permissionId = permissionId;
-    }
-
-    public long getId() {
-        return roleId;
     }
 }

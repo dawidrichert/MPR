@@ -1,22 +1,23 @@
 package com.dawidrichert.database.repositories;
 
-import com.dawidrichert.database.models.DbPermissionRole;
+import com.dawidrichert.database.models.PermissionRole;
+import com.dawidrichert.unitofwork.UnitOfWork;
 
 import javax.sql.DataSource;
 import java.sql.*;
 
-public class PermissionRoleRepository extends BaseRepository<DbPermissionRole> {
+public class PermissionRoleRepository extends BaseRepository<PermissionRole> {
 
     private static final String tableName = "PermissionsRoles";
     private static final String col_IdRole = "IdRole";
     private static final String col_IdPermission = "IdPermission";
 
-    public PermissionRoleRepository(DataSource dataSource) {
-        super(dataSource, tableName, col_IdRole);
+    public PermissionRoleRepository(DataSource dataSource, UnitOfWork unitOfWork) {
+        super(dataSource, unitOfWork, tableName, col_IdRole);
     }
 
     @Override
-    public long add(DbPermissionRole permissionRole) {
+    public long persistAdd(PermissionRole permissionRole) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format("INSERT INTO %s (", tableName);
@@ -36,7 +37,7 @@ public class PermissionRoleRepository extends BaseRepository<DbPermissionRole> {
     }
 
     @Override
-    public void update(DbPermissionRole permissionRole) {
+    public void persistUpdate(PermissionRole permissionRole) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format ("UPDATE %s SET ", tableName);
@@ -72,8 +73,8 @@ public class PermissionRoleRepository extends BaseRepository<DbPermissionRole> {
     }
 
     @Override
-    protected DbPermissionRole mapResultSetToModel(ResultSet resultSet) throws SQLException {
-        return new DbPermissionRole(
+    protected PermissionRole mapResultSetToModel(ResultSet resultSet) throws SQLException {
+        return new PermissionRole(
                 resultSet.getLong(col_IdRole),
                 resultSet.getLong(col_IdPermission));
     }

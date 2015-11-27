@@ -1,8 +1,7 @@
 package com.dawidrichert.database.models;
 
-public class DbAddress implements Indexable {
+public class Address extends Entity {
 
-    private long id;
     private long userId;
     private String street;
     private String city;
@@ -10,26 +9,20 @@ public class DbAddress implements Indexable {
     private String province;
     private String country;
 
-    public DbAddress(long id, long userId, String street, String city, String postalCode, String province, String country) {
+    public Address(long id, long userId, String street, String city, String postalCode, String province, String country) {
         this(userId, street, city, postalCode, province, country);
-        this.id = id;
+        setId(id);
+        setState(EntityState.Unchanged);
     }
 
-    public DbAddress(long userId, String street, String city, String postalCode, String province, String country) {
+    public Address(long userId, String street, String city, String postalCode, String province, String country) {
+        super(EntityState.New);
         this.userId = userId;
         this.street = street;
         this.city = city;
         this.postalCode = postalCode;
         this.province = province;
         this.country = country;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public long getUserId() {

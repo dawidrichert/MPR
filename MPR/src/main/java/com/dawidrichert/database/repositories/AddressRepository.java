@@ -1,13 +1,14 @@
 package com.dawidrichert.database.repositories;
 
-import com.dawidrichert.database.models.DbAddress;
+import com.dawidrichert.database.models.Address;
+import com.dawidrichert.unitofwork.UnitOfWork;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class AddressRepository extends BaseRepository<DbAddress> {
+public class AddressRepository extends BaseRepository<Address> {
 
     private static final String tableName = "Addresses";
     private static final String col_Id = "Id";
@@ -18,12 +19,12 @@ public class AddressRepository extends BaseRepository<DbAddress> {
     private static final String col_Province = "Province";
     private static final String col_Country = "Country";
 
-    public AddressRepository(DataSource dataSource) {
-        super(dataSource, tableName, col_Id);
+    public AddressRepository(DataSource dataSource, UnitOfWork unitOfWork) {
+        super(dataSource, unitOfWork, tableName, col_Id);
     }
 
-    public Collection<DbAddress> getByUserId(long userId) {
-        Collection<DbAddress> addresses = new ArrayList<>();
+    public Collection<Address> getByUserId(long userId) {
+        Collection<Address> addresses = new ArrayList<>();
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql = String.format("SELECT * FROM %s WHERE %s='%s'", tableName, col_UserId, userId);
@@ -42,7 +43,7 @@ public class AddressRepository extends BaseRepository<DbAddress> {
     }
 
     @Override
-    public long add(DbAddress address) {
+    public long persistAdd(Address address) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format("INSERT INTO %s (", tableName);
@@ -70,7 +71,7 @@ public class AddressRepository extends BaseRepository<DbAddress> {
     }
 
     @Override
-    public void update(DbAddress address) {
+    public void persistUpdate(Address address) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format ("UPDATE %s SET ", tableName);
@@ -119,8 +120,8 @@ public class AddressRepository extends BaseRepository<DbAddress> {
     }
 
     @Override
-    protected DbAddress mapResultSetToModel(ResultSet resultSet) throws SQLException {
-        return new DbAddress(
+    protected Address mapResultSetToModel(ResultSet resultSet) throws SQLException {
+        return new Address(
                 resultSet.getLong(col_Id),
                 resultSet.getLong(col_UserId),
                 resultSet.getString(col_Street),

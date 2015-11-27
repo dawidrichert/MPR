@@ -1,21 +1,18 @@
-package com.dawidrichert.service.models;
+package com.dawidrichert.database.models;
 
-public class Permission {
+public class Permission extends Entity {
 
-    private long id;
     private String name;
 
     public Permission(long id, String name) {
         this(name);
-        this.id = id;
+        setId(id);
+        setState(EntityState.Unchanged);
     }
 
     public Permission(String name) {
+        super(EntityState.New);
         this.name = name;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getName() {

@@ -1,21 +1,22 @@
 package com.dawidrichert.database.repositories;
 
-import com.dawidrichert.database.models.DbPermission;
+import com.dawidrichert.database.models.Permission;
+import com.dawidrichert.unitofwork.UnitOfWork;
 
 import javax.sql.DataSource;
 import java.sql.*;
 
-public class PermissionRepository extends BaseRepository<DbPermission> {
+public class PermissionRepository extends BaseRepository<Permission> {
 
     private static final String tableName = "Permissions";
     private static final String col_Id = "Id";
     private static final String col_Name = "Name";
 
-    public PermissionRepository(DataSource dataSource) {
-        super(dataSource, tableName, col_Id);
+    public PermissionRepository(DataSource dataSource, UnitOfWork unitOfWork) {
+        super(dataSource, unitOfWork, tableName, col_Id);
     }
 
-    public DbPermission getByName(String name)  {
+    public Permission getByName(String name)  {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql = String.format("SELECT * FROM %s WHERE %s='%s'", tableName, col_Name, name);
@@ -34,7 +35,7 @@ public class PermissionRepository extends BaseRepository<DbPermission> {
     }
 
     @Override
-    public long add(DbPermission permission) {
+    public long persistAdd(Permission permission) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format("INSERT INTO %s (", tableName);
@@ -52,7 +53,7 @@ public class PermissionRepository extends BaseRepository<DbPermission> {
     }
 
     @Override
-    public void update(DbPermission permission) {
+    public void persistUpdate(Permission permission) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format ("UPDATE %s SET ", tableName);
@@ -86,8 +87,8 @@ public class PermissionRepository extends BaseRepository<DbPermission> {
     }
 
     @Override
-    protected DbPermission mapResultSetToModel(ResultSet resultSet) throws SQLException {
-        return new DbPermission(
+    protected Permission mapResultSetToModel(ResultSet resultSet) throws SQLException {
+        return new Permission(
                 resultSet.getLong(col_Id),
                 resultSet.getString(col_Name));
     }

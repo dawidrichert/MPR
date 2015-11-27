@@ -1,6 +1,8 @@
 package com.dawidrichert.database.repositories;
 
-import com.dawidrichert.database.models.Indexable;
+import com.dawidrichert.database.models.Entity;
+import com.dawidrichert.unitofwork.UnitOfWork;
+import com.dawidrichert.unitofwork.UnitOfWorkRepository;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -10,17 +12,37 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public abstract class BaseRepository<T extends Indexable> implements Repository<T> {
+public abstract class BaseRepository<T extends Entity> implements Repository<T>, UnitOfWorkRepository<T> {
 
     private final String tableName;
     private final String col_Id;
     protected final DataSource dataSource;
+    private UnitOfWork unitOfWork;
 
-    public BaseRepository(DataSource dataSource, String tableName, String col_Id) {
+    public BaseRepository(DataSource dataSource, UnitOfWork unitOfWork, String tableName, String col_Id) {
+        this.unitOfWork = unitOfWork;
         this.dataSource = dataSource;
         this.tableName = tableName;
         this.col_Id = col_Id;
         createTableIfNotExists();
+    }
+
+    @Override
+    public void add(T entity)
+    {
+        unitOfWork.markAsNew(entity, this);
+    }
+
+    @Override
+    public void update(T entity)
+    {
+        unitOfWork.markAsDirty(entity, this);
+    }
+
+    @Override
+    public void remove(T entity)
+    {
+        unitOfWork.markAsDeleted(entity, this);
     }
 
     @Override
@@ -63,10 +85,10 @@ public abstract class BaseRepository<T extends Indexable> implements Repository<
     }
 
     @Override
-    public abstract long add(T item);
+    public abstract long persistAdd(T item);
 
     @Override
-    public void remove(T item) {
+    public void persistRemove(T item) {
         try(Connection connection = dataSource.getConnection()) {
             String sql = String.format("DELETE FROM %s WHERE %s='%s'", tableName, col_Id, item.getId());
 
@@ -92,7 +114,7 @@ public abstract class BaseRepository<T extends Indexable> implements Repository<
     }
 
     @Override
-    public abstract void update(T item);
+    public abstract void persistUpdate(T item);
 
     protected abstract void createTableIfNotExists();
 

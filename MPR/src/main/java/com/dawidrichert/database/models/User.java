@@ -1,29 +1,22 @@
 package com.dawidrichert.database.models;
 
-public class DbUser implements Indexable {
+public class User extends Entity {
 
-    private long id;
     private long personId;
     private String login;
     private String password;
 
-    public DbUser(long id, long personId, String login, String password) {
+    public User(long id, long personId, String login, String password) {
         this(personId, login, password);
-        this.id = id;
+        setId(id);
+        setState(EntityState.Unchanged);
     }
 
-    public DbUser(long personId, String login, String password) {
+    public User(long personId, String login, String password) {
+        super(EntityState.New);
         this.personId = personId;
         this.login = login;
         this.password = password;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public long getPersonId() {

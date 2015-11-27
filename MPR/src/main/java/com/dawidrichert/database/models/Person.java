@@ -1,25 +1,22 @@
-package com.dawidrichert.service.models;
+package com.dawidrichert.database.models;
 
-public class Person {
+public class Person extends Entity {
 
-    private long id;
     private String firstName;
     private String lastName;
     private String phoneNumber;
 
     public Person(long id, String firstName, String lastName, String phoneNumber) {
         this(firstName, lastName, phoneNumber);
-        this.id = id;
+        setId(id);
+        setState(EntityState.Unchanged);
     }
 
     public Person(String firstName, String lastName, String phoneNumber) {
-        this.firstName =  firstName;
+        super(EntityState.New);
+        this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getFirstName() {

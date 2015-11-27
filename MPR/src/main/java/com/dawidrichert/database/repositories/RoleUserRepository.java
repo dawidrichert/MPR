@@ -1,22 +1,23 @@
 package com.dawidrichert.database.repositories;
 
-import com.dawidrichert.database.models.DbRoleUser;
+import com.dawidrichert.database.models.RoleUser;
+import com.dawidrichert.unitofwork.UnitOfWork;
 
 import javax.sql.DataSource;
 import java.sql.*;
 
-public class RoleUserRepository extends BaseRepository<DbRoleUser> {
+public class RoleUserRepository extends BaseRepository<RoleUser> {
 
     private static final String tableName = "RolesUsers";
     private static final String col_IdUser = "IdUser";
     private static final String col_IdRole = "IdRole";
 
-    public RoleUserRepository(DataSource dataSource) {
-        super(dataSource, tableName, col_IdRole);
+    public RoleUserRepository(DataSource dataSource, UnitOfWork unitOfWork) {
+        super(dataSource, unitOfWork, tableName, col_IdRole);
     }
 
     @Override
-    public long add(DbRoleUser roleUser) {
+    public long persistAdd(RoleUser roleUser) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format("INSERT INTO %s (", tableName);
@@ -36,7 +37,7 @@ public class RoleUserRepository extends BaseRepository<DbRoleUser> {
     }
 
     @Override
-    public void update(DbRoleUser roleUser) {
+    public void persistUpdate(RoleUser roleUser) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format ("UPDATE %s SET ", tableName);
@@ -72,8 +73,8 @@ public class RoleUserRepository extends BaseRepository<DbRoleUser> {
     }
 
     @Override
-    protected DbRoleUser mapResultSetToModel(ResultSet resultSet) throws SQLException {
-        return new DbRoleUser(
+    protected RoleUser mapResultSetToModel(ResultSet resultSet) throws SQLException {
+        return new RoleUser(
                 resultSet.getLong(col_IdUser),
                 resultSet.getLong(col_IdRole));
     }

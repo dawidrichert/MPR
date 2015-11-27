@@ -1,11 +1,12 @@
 package com.dawidrichert.database.repositories;
 
-import com.dawidrichert.database.models.DbPerson;
+import com.dawidrichert.database.models.Person;
+import com.dawidrichert.unitofwork.UnitOfWork;
 
 import javax.sql.DataSource;
 import java.sql.*;
 
-public class PersonRepository extends BaseRepository<DbPerson> {
+public class PersonRepository extends BaseRepository<Person> {
 
     private static final String tableName = "Persons";
     private static final String col_Id = "Id";
@@ -13,12 +14,12 @@ public class PersonRepository extends BaseRepository<DbPerson> {
     private static final String col_LastName = "LastName";
     private static final String col_PhoneNumber = "PhoneNumber";
 
-    public PersonRepository(DataSource dataSource) {
-        super(dataSource, tableName, col_Id);
+    public PersonRepository(DataSource dataSource, UnitOfWork unitOfWork) {
+        super(dataSource, unitOfWork, tableName, col_Id);
     }
 
     @Override
-    public long add(DbPerson person) {
+    public long persistAdd(Person person) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format("INSERT INTO %s (", tableName);
@@ -40,7 +41,7 @@ public class PersonRepository extends BaseRepository<DbPerson> {
     }
 
     @Override
-    public void update(DbPerson person) {
+    public void persistUpdate(Person person) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format ("UPDATE %s SET ", tableName);
@@ -80,8 +81,8 @@ public class PersonRepository extends BaseRepository<DbPerson> {
     }
 
     @Override
-    protected DbPerson mapResultSetToModel(ResultSet resultSet) throws SQLException {
-        return new DbPerson(
+    protected Person mapResultSetToModel(ResultSet resultSet) throws SQLException {
+        return new Person(
                 resultSet.getLong(col_Id),
                 resultSet.getString(col_FirstName),
                 resultSet.getString(col_LastName),

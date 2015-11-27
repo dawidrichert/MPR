@@ -1,21 +1,22 @@
 package com.dawidrichert.database.repositories;
 
-import com.dawidrichert.database.models.DbRole;
+import com.dawidrichert.database.models.Role;
+import com.dawidrichert.unitofwork.UnitOfWork;
 
 import javax.sql.DataSource;
 import java.sql.*;
 
-public class RoleRepository extends BaseRepository<DbRole> {
+public class RoleRepository extends BaseRepository<Role> {
 
     private static final String tableName = "Roles";
     private static final String col_Id = "Id";
     private static final String col_Name = "Name";
 
-    public RoleRepository(DataSource dataSource) {
-        super(dataSource, tableName, col_Id);
+    public RoleRepository(DataSource dataSource, UnitOfWork unitOfWork) {
+        super(dataSource, unitOfWork, tableName, col_Id);
     }
 
-    public DbRole getByName(String name)  {
+    public Role getByName(String name)  {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql = String.format("SELECT * FROM %s WHERE %s='%s'", tableName, col_Name, name);
@@ -34,7 +35,7 @@ public class RoleRepository extends BaseRepository<DbRole> {
     }
 
     @Override
-    public long add(DbRole role) {
+    public long persistAdd(Role role) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format("INSERT INTO %s (", tableName);
@@ -52,7 +53,7 @@ public class RoleRepository extends BaseRepository<DbRole> {
     }
 
     @Override
-    public void update(DbRole role) {
+    public void persistUpdate(Role role) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format ("UPDATE %s SET ", tableName);
@@ -86,8 +87,8 @@ public class RoleRepository extends BaseRepository<DbRole> {
     }
 
     @Override
-    protected DbRole mapResultSetToModel(ResultSet resultSet) throws SQLException {
-        return new DbRole(
+    protected Role mapResultSetToModel(ResultSet resultSet) throws SQLException {
+        return new Role(
                 resultSet.getLong(col_Id),
                 resultSet.getString(col_Name));
     }

@@ -1,11 +1,12 @@
 package com.dawidrichert.database.repositories;
 
-import com.dawidrichert.database.models.DbUser;
+import com.dawidrichert.database.models.User;
+import com.dawidrichert.unitofwork.UnitOfWork;
 
 import javax.sql.DataSource;
 import java.sql.*;
 
-public class UserRepository extends BaseRepository<DbUser> {
+public class UserRepository extends BaseRepository<User> {
 
     private static final String tableName = "Users";
     private static final String col_Id = "Id";
@@ -13,12 +14,12 @@ public class UserRepository extends BaseRepository<DbUser> {
     private static final String col_Login = "Login";
     private static final String col_Password = "Password";
 
-    public UserRepository(DataSource dataSource) {
-        super(dataSource, tableName, col_Id);
+    public UserRepository(DataSource dataSource, UnitOfWork unitOfWork) {
+        super(dataSource, unitOfWork, tableName, col_Id);
     }
 
     @Override
-    public long add(DbUser user) {
+    public long persistAdd(User user) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format("INSERT INTO %s (", tableName);
@@ -40,7 +41,7 @@ public class UserRepository extends BaseRepository<DbUser> {
     }
 
     @Override
-    public void update(DbUser user) {
+    public void persistUpdate(User user) {
         try(Connection connection = dataSource.getConnection()) {
             String sql;
             sql  = String.format ("UPDATE %s SET ", tableName);
@@ -80,8 +81,8 @@ public class UserRepository extends BaseRepository<DbUser> {
     }
 
     @Override
-    protected DbUser mapResultSetToModel(ResultSet resultSet) throws SQLException {
-        return new DbUser(
+    protected User mapResultSetToModel(ResultSet resultSet) throws SQLException {
+        return new User(
                 resultSet.getLong(col_Id),
                 resultSet.getLong(col_PersonId),
                 resultSet.getString(col_Login),
