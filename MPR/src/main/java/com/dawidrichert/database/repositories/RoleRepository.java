@@ -1,7 +1,7 @@
 package com.dawidrichert.database.repositories;
 
 import com.dawidrichert.database.models.Role;
-import com.dawidrichert.unitofwork.UnitOfWork;
+import com.dawidrichert.database.unitofwork.UnitOfWork;
 
 import javax.sql.DataSource;
 import java.sql.*;

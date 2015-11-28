@@ -1,4 +1,4 @@
-package com.dawidrichert.unitofwork;
+package com.dawidrichert.database.unitofwork;
 
 import com.dawidrichert.database.models.Entity;
 

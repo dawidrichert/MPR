@@ -1,8 +1,8 @@
 package com.dawidrichert.database.repositories;
 
 import com.dawidrichert.database.models.Entity;
-import com.dawidrichert.unitofwork.UnitOfWork;
-import com.dawidrichert.unitofwork.UnitOfWorkRepository;
+import com.dawidrichert.database.unitofwork.UnitOfWork;
+import com.dawidrichert.database.unitofwork.UnitOfWorkRepository;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
